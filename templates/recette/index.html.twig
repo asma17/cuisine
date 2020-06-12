@@ -8,6 +8,10 @@
 
   {% block content %}
 
+    <div class="d-flex justify-content-center" >
+      <img src="{{asset('css/spinner.png')}}" style="display:none" id="spinner"/>        
+    </div>
+
     {% for message in app.flashes('success') %}
           <div class="alert alert-success">
               {{ message }}
@@ -102,21 +106,24 @@
     $('#idrecette').val($id);
   }
 
-  // Supprimer d'une recette
-  var ajaxSingleton = false
+  // Supprimer d'une recette 
   function ConfirmeDelete(){
     var $id = $('#idrecette').val();
     var url = "http://localhost:5000/recette";
     var xhr = new XMLHttpRequest();
     xhr.open("DELETE", url+'/'+$id, true);
+    // spinner
+    var beforeSend = function(){ 
+      document.getElementById("spinner").style.display = "block";
+      $("html, body").animate({ scrollTop: 0 }, "slow");
+    }
     xhr.onload = function () {
       var recettes = JSON.parse(xhr.responseText);
       if (xhr.readyState == 4 && xhr.status == "200") {
         $('#recettes').load(window.location.href + " #recettes" );  
-      } else {
-        console.error(recettes);
-      }
+      } 
     }
+    beforeSend();
     xhr.send(null);
 }
 

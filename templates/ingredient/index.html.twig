@@ -8,12 +8,16 @@
 
 {% block content %}
 
+  <div class="d-flex justify-content-center" >
+    <img src="{{asset('css/spinner.png')}}" style="display:none" id="spinner"/>        
+  </div>
+
     {% for message in app.flashes('success') %}
       <div class="alert alert-success">
           {{ message }}
       </div>
     {% endfor %}
-            
+
     {#Modal pour confirmer la suppression d'un ingredient #}
     <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="delete" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -101,23 +105,25 @@
       $('#idingredient').val($id);
   }
 
-  // Supprimer d'un ingredient
-  var ajaxSingleton = false
+  // Supprimer d'un ingredient 
   function ConfirmeDelete(){
     var $id = $('#idingredient').val();
-    console.log($id);
     var url = "http://localhost:5000/ingredient";
     var xhr = new XMLHttpRequest();
     xhr.open("DELETE", url+'/'+$id, true);
+    // spinner
+    var beforeSend = function(){ 
+      document.getElementById("spinner").style.display = "block";
+      $("html, body").animate({ scrollTop: 0 }, "slow");
+      }
     xhr.onload = function () {
       var ingredients = JSON.parse(xhr.responseText);
       if (xhr.readyState == 4 && xhr.status == "200") {
+        document.getElementById("spinner").style.display = "none";
         $('#ingredients').load(window.location.href + " #ingredients" );  
-
-      } else {
-        console.error(ingredients);
-      }
+      }  
     }
+    beforeSend();
     xhr.send(null);
 }
 
