@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} <title>Ajouter un ingredient</title> {% endblock %}
+
+{% block stylesheet %}
+        {{ parent() }}
+{%endblock%}
+
+{% block content %} 
+        <h3> Ajouter un ingrédient</h3> 
+        {{ include ('ingredient/_form.html.twig', {form: form, button: 'Ajouter', action:  path('createingredient' )   }) }}  
+{% endblock %}
+
+{% block javascript %}
+        {{ parent() }}
+{%endblock%}
+

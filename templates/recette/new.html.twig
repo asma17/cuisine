@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} <title>Créer une nouvelle recette</title> {% endblock %}
+
+{% block stylesheet %}
+        {{ parent() }}
+{%endblock%}
+
+{% block content %} 
+        <h3> Ajouter une nouvelle recette</h3> 
+        {{ include ('recette/_form.html.twig', {form: form_recette, button: 'Ajouter', action:  path('createrecette' )   }) }}  
+{% endblock %}
+
+{% block javascript %}
+        {{ parent() }}
+{%endblock%}
+

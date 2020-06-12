@@ -1,0 +1,117 @@
+        
+<form action='{{(action)}}' novalidate method="POST" enctype='multipart/form-data'>
+        <input type="hidden" name="nb" id="nb" />
+        <div class="form-row">  
+                
+                <div class="form-group col-md-12"> 
+                        <label> {{form_label(form_recette.titre)}} <label style="color:red"> * </label> </label>
+                        {{form_widget(form_recette.titre)}}
+                </div>
+
+                <div class="form-group col-md-12"> 
+                        <label>{{form_label(form_recette.soustitre)}}</label>
+                        {{form_widget(form_recette.soustitre)}}
+                </div> 
+
+
+                {%if check == "Yes"%}
+                        <span class="invalid-feedback d-block">
+                                <span class="d-block">
+                                        <span class="form-error-icon badge badge-danger text-uppercase">Error</span> 
+                                        <span class="form-error-message">Veuillez remplir tous les champs obligatoires des ingrédients</span>
+                                </span>
+                        </span>
+                {%endif%}
+                <div id="div_principal_ingredient" class="col-md-12">
+                        <div class="form-row" id="div_ingredient0">
+                                <HR align=center size=8 width="100%">
+                                <div class="form-group col-md-3"> 
+                                        <label> {{form_label(form_recette.foringredient)}} <label style="color:red"> * </label> </label>
+                                        {{form_widget(form_recette.foringredient, {'id' : 'ingredient#0[nom]', 'full_name' : 'ingredient#0[nom]'})}}
+                                </div>
+
+                                <div class="form-group col-md-3"> 
+                                        <label> {{form_label(form_ingredient_recette.quantite)}} <label style="color:red"> * </label> </label>
+                                        {{form_widget(form_ingredient_recette.quantite, {'id' : 'ingredient#0[qte]', 'full_name': 'ingredient#0[qte]', 'type':'number'})}}
+                                </div>
+
+                                <div class="form-group col-md-3"> 
+                                        <label> {{form_label(form_unite.libelle)}} <label style="color:red"> * </label> </label>
+                                        {{form_widget(form_unite.libelle, {'id' : 'ingredient#0[libelle]', 'full_name': 'ingredient#0[libelle]'})}}
+                                </div>
+
+                                <div class="form-group col-md-1 offset-md-1" style="display:none" id="div_delete#0" onClick="supprimer(this)" title="Supprimer ingrédient">
+                                        <br>
+                                        <button class="btn btn-danger" id="delete#0"><i class="lni lni-trash"></i> </button>
+                                </div>
+                        </div>
+                </div>
+
+                <br>
+                <div class="offset-md-9" onClick="add(event.preventDefault())"> 
+                        <button class="btn btn-success" id="add" ><i class="lni lni-circle-plus"></i> Ajouter Ingrédient</button>
+                </div>
+        
+        </div>
+
+        <br><br>
+
+        <div class="d-flex justify-content-center">
+                <button class="btn btn-primary col-md-3"><i class="lni lni-save"></i> {{button |default('Créer')}} </button>
+        </div>
+
+</form>
+
+
+<script>
+        var nbIngredient = 0;
+        var initNbIngredient = 1;
+        $('#nb').val(nbIngredient);  
+
+        {# Générer la liste des ingrédients ajoutée par l'utilisateur => fonction générée si les champs obligatoires ne sont pas remplis #}        
+        {% if app.session.get('ingredients') is not null %}
+                {%set data = app.session.get('ingredients') %}
+                {% for key, ingredient in data %}
+                        {% set indexUp = key %}
+                        {%if indexUp != 0 %} console.log({{indexUp}});  add()  {%endif%}
+
+                        {% for key,val in ingredient %}
+                                {% set index = key %} 
+                                document.getElementById("ingredient#"+'{{indexUp}}'+"["+'{{index}}'+"]").value = "{{val}}";  
+                        {% endfor %}
+                {% endfor %}
+        {% endif %}
+                        
+        
+        // Ajouter ingrédient
+        function add(event){
+                nbIngredient++;
+                initNbIngredient++;
+                $('#nb').val(initNbIngredient)
+                $clone = $( "#div_ingredient0" ).clone();
+                $clone.find('[id],[name]').each(function () {
+                        var res = this.id.replace("#0", "#"+nbIngredient );
+                        this.id = res
+                        this.name = res
+                        this.value = ""
+                        });
+                $clone.appendTo( "#div_principal_ingredient" ); 
+                document.getElementById('div_delete#'+nbIngredient).style.display="block";
+        }
+
+        // Supprimer ingredient
+        function supprimer(e){
+                event.preventDefault();
+                if(initNbIngredient != 1 ){
+                        $(e).parent().remove();
+                        initNbIngredient--;
+                        $('#nb').val(initNbIngredient)
+                }
+        }
+
+        // Désactiver le bouton Entrée du clavier
+        $('html').bind('keypress', function(e) {
+                if(e.keyCode == 13) return false;
+        });
+
+        </script>        

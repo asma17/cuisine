@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\IngredientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass=IngredientRepository::class)
+ */
+class Ingredient
+{
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nom;
+ 
+    /**
+        * @ORM\OneToMany(targetEntity="App\Entity\IngredientRecette", mappedBy="ingredient", cascade={"persist", "remove", "all"}, orphanRemoval=true)
+    */
+    private $ingredientRecette;
+
+    public function __construct()
+    {
+        $this->ingredientRecette = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(?string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|IngredientRecette[]
+     */
+    public function getIngredientRecette(): Collection
+    {
+        return $this->ingredientRecette;
+    }
+
+    public function addIngredientRecette(IngredientRecette $ingredientRecette): self
+    {
+        if (!$this->ingredientRecette->contains($ingredientRecette)) {
+            $this->ingredientRecette[] = $ingredientRecette;
+            $ingredientRecette->setIngredient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredientRecette(IngredientRecette $ingredientRecette): self
+    {
+        if ($this->ingredientRecette->contains($ingredientRecette)) {
+            $this->ingredientRecette->removeElement($ingredientRecette);
+            // set the owning side to null (unless already changed)
+            if ($ingredientRecette->getIngredient() === $this) {
+                $ingredientRecette->setIngredient(null);
+            }
+        }
+
+        return $this;
+    }
+}

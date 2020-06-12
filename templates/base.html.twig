@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% block title %} 
+      <title>Cuisine - Recettes</title> 
+    {% endblock title %}
+
+    {% block stylesheet %}
+
+      <!-- Bootstrap core CSS -->
+      <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.min.css')}}">
+
+      <!-- Custom styles for this template -->
+      <link rel="stylesheet" href="{{asset('css/shop-homepage.css')}}">
+
+      <link rel="stylesheet" href="{{asset('bootstrap/css/jquery.dataTables.min.css')}}"      />
+
+      <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    {%endblock stylesheet %}
+
+  </head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Ma cuisine</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#" onclick="location= '{{path('recette')}}';"  >Recettes
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <br><br>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-3">
+
+        <div class="list-group">
+          <a href="#" onclick="location= '{{path('recette')}}';"    class="list-group-item">Recettes</a> 
+          <a href="#" onclick="location= '{{path('ingredients')}}';"    class="list-group-item">Ingrédients</a> 
+        </div>
+
+      </div>
+      <!-- /.col-lg-3 -->
+
+
+      <div class="col-lg-9" style="margin-bottom:129px">
+        {% block content  %}  
+        {%endblock%}
+      </div>
+
+      <!-- /.col-lg-9 -->
+
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy;Asma BLEL | asmaablel@gmail.com | 2020</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+    {%block javascript %}
+        <!-- Bootstrap core JavaScript --> 
+        <script src="{{asset('jquery/jquery.min.js')}}"></script>
+        <script src="{{asset('bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{asset('bootstrap/js/jquery.dataTables.min.js')}}" ></script>
+    {%endblock javascript %}    
+
+
+</body>
+
+</html>

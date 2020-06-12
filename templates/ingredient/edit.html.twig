@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} <title>Editer ingrédient</title> {% endblock %}
+
+{% block stylesheet %}
+        {{ parent() }}
+{%endblock%}
+
+{% block content %} 
+        <h3> Editer une ingredient</h3> 
+        {% include 'ingredient/_form.html.twig' with {'form': form,  button: 'Editer', action:  path('editingredient', {'id':ingredient.id}) } %}
+
+{% endblock %}
+
+{% block javascript %}
+        {{ parent() }}
+{%endblock%}
+
